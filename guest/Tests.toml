@@ -17,3 +17,20 @@ max_instrs = 10000
 name = "isa_branch"
 expect = "Pass"
 max_instrs = 10000
+
+[[test]]
+name = "uart_output"
+expect = "Pass"
+max_instrs = 10000
+uart_expect = "OK"
+
+[[test]]
+name = "uart_input"
+expect = "Pass"
+max_instrs = 10000
+uart_preload = "A"
+
+[[test]]
+name = "clint_timer"
+expect = "Pass"
+max_instrs = 10000
