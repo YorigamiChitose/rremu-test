@@ -1,0 +1,10 @@
+[package]
+name = "rremu-harness"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rremu-machine = { path = "/home/yori/rremu/rremu/crates/rremu-machine" }
+rremu-loader = { path = "/home/yori/rremu/rremu/crates/rremu-loader" }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"

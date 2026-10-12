@@ -1,0 +1,4 @@
+[[test]]
+name = "isa_arith"
+expect = "Pass"
+max_instrs = 10000
