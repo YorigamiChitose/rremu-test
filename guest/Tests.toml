@@ -94,3 +94,38 @@ max_instrs = 10000
 name = "cte_preserve_regs"
 expect = "Pass"
 max_instrs = 10000
+
+[[test]]
+name = "csr_rw"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "csr_set_clear"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "csr_imm"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "csr_counters"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "csr_mhartid"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "edge_div_zero"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "edge_null_addr"
+expect = "Timeout"
+max_instrs = 10000
