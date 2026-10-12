@@ -22,6 +22,8 @@ pub struct TestSpec {
     pub expect: String,
     pub max_instrs: u64,
     pub uart_preload: Option<String>,
+    /// 运行结束后从 UART 输出缓冲取出的字节应与此字符串精确匹配。
+    pub uart_expect: Option<String>,
     pub fb: Option<bool>,
 }
 

@@ -80,6 +80,19 @@ fn main() {
             _ => false,
         };
 
+        // UART 输出校验：取走缓冲并与期望串比较
+        if ok {
+            if let Some(want) = &spec.uart_expect {
+                let got = machine.drain_uart();
+                let got_str = String::from_utf8_lossy(&got);
+                if got_str.as_ref() != want {
+                    println!("  [FAIL] {} — UART output mismatch: expected {:?}, got {:?}", spec.name, want, got_str);
+                    failed += 1;
+                    continue;
+                }
+            }
+        }
+
         if ok {
             println!("  [PASS] {}", spec.name);
             passed += 1;
