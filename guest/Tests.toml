@@ -2,3 +2,18 @@
 name = "isa_arith"
 expect = "Pass"
 max_instrs = 10000
+
+[[test]]
+name = "isa_logical"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "isa_load_store"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "isa_branch"
+expect = "Pass"
+max_instrs = 10000
