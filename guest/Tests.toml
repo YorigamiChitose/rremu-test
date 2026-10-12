@@ -34,3 +34,63 @@ uart_preload = "A"
 name = "clint_timer"
 expect = "Pass"
 max_instrs = 10000
+
+[[test]]
+name = "cte_yield"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_syscall"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_breakpoint"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_ill_insn"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_load_fault"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_store_fault"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_misalign_load"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_misalign_store"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_irq_timer"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_irq_software"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_ctx_switch"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_preserve_regs"
+expect = "Pass"
+max_instrs = 10000
