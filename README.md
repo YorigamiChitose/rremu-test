@@ -28,11 +28,11 @@ cd harness && cargo run --release --bin rremu-harness
 | `uart_expect` | 可选，运行结束后 UART 输出缓冲须与此串精确匹配 |
 | `fb` | 可选，为 true 时映射 framebuffer 设备 |
 
-## 用例清单（30 个）
+## 用例清单（32 个）
 
 | 分类 | 用例 |
 |---|---|
-| ISA（4） | isa_arith / isa_logical / isa_load_store / isa_branch |
+| ISA（6） | isa_arith / isa_logical / isa_load_store / isa_branch / isa_amo / isa_lr_sc |
 | 设备（3） | uart_output / uart_input / clint_timer |
 | CTE（13） | cte_yield / cte_syscall / cte_breakpoint / cte_ill_insn / cte_load_fault / cte_store_fault / cte_misalign_load / cte_misalign_store / cte_irq_timer / cte_irq_software / cte_ctx_switch / cte_preserve_regs / cte_mtval |
 | CSR（6） | csr_rw / csr_set_clear / csr_imm / csr_counters / csr_mhartid / csr_mip |

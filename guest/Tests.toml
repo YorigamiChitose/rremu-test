@@ -19,6 +19,16 @@ expect = "Pass"
 max_instrs = 10000
 
 [[test]]
+name = "isa_amo"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "isa_lr_sc"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
 name = "uart_output"
 expect = "Pass"
 max_instrs = 10000
