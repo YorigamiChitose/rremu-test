@@ -139,3 +139,13 @@ max_instrs = 10000
 name = "cte_vectored_mtvec"
 expect = "Fault:vectored mtvec"
 max_instrs = 10000
+
+[[test]]
+name = "csr_mip"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "cte_mtval"
+expect = "Pass"
+max_instrs = 10000
