@@ -28,13 +28,13 @@ cd harness && cargo run --release --bin rremu-harness
 | `uart_expect` | 可选，运行结束后 UART 输出缓冲须与此串精确匹配 |
 | `fb` | 可选，为 true 时映射 framebuffer 设备 |
 
-## 用例清单（32 个）
+## 用例清单（33 个）
 
 | 分类 | 用例 |
 |---|---|
 | ISA（6） | isa_arith / isa_logical / isa_load_store / isa_branch / isa_amo / isa_lr_sc |
 | 设备（3） | uart_output / uart_input / clint_timer |
-| CTE（13） | cte_yield / cte_syscall / cte_breakpoint / cte_ill_insn / cte_load_fault / cte_store_fault / cte_misalign_load / cte_misalign_store / cte_irq_timer / cte_irq_software / cte_ctx_switch / cte_preserve_regs / cte_mtval |
+| CTE（14） | cte_yield / cte_syscall / cte_breakpoint / cte_ill_insn / cte_load_fault / cte_store_fault / cte_misalign_load / cte_misalign_store / cte_irq_timer / cte_irq_software / cte_ctx_switch / cte_preserve_regs / cte_mtval / cte_default_handler |
 | CSR（6） | csr_rw / csr_set_clear / csr_imm / csr_counters / csr_mhartid / csr_mip |
 | 断言矩阵（2） | fail_case（Fail）/ cte_vectored_mtvec（Fault） |
 | 边界（2） | edge_div_zero / edge_null_addr |
@@ -45,4 +45,5 @@ cd harness && cargo run --release --bin rremu-harness
 - 中断类用例的 handler 须清除电平触发源（`clint_set_timercmp(u64::MAX)` / `clint_set_msip(0)`）再返回，否则 mret 后重入
 - 异常类用例的 handler 须按指令长度推进 `mepc`（取指首 half 低 2 位判 2/4 字节）跳过故障指令
 - `cte_mtval` 验证 trap 后 `mtval` 记录故障地址；`csr_mip` 验证 `mip` 的 MSIP 位由设备 pending 投影
-- `edge_null_addr` 无 trap handler，预期 Timeout（mtvec=0 自旋）
+- `cte_default_handler` 验证未调 `trap_init` 时的默认陷阱处理：AM 启动装 mtvec，默认 handler 记录 mcause/mepc 后 `halt(0x10)`
+- `edge_null_addr` 显式 `csrw mtvec, zero` 模拟无 handler，预期 Timeout（自旋）
