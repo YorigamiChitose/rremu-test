@@ -23,11 +23,15 @@ fn main() {
 
     // 构建 guest
     println!("Building guest...");
-    Command::new("cargo")
+    let build_status = Command::new("cargo")
         .args(["build", "--release"])
         .current_dir(&guest_dir)
         .status()
-        .expect("failed to build guest");
+        .expect("failed to spawn cargo build");
+    if !build_status.success() {
+        eprintln!("guest build failed");
+        std::process::exit(2);
+    }
 
     let elf_dir = workspace_root
         .join("target/riscv32imac-unknown-none-elf/release");

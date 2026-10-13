@@ -129,3 +129,13 @@ max_instrs = 10000
 name = "edge_null_addr"
 expect = "Timeout"
 max_instrs = 10000
+
+[[test]]
+name = "fail_case"
+expect = "Fail"
+max_instrs = 10000
+
+[[test]]
+name = "cte_vectored_mtvec"
+expect = "Fault:vectored mtvec"
+max_instrs = 10000
