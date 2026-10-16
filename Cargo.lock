@@ -161,6 +161,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "rremu-config"
+version = "0.1.0"
+
+[[package]]
 name = "rremu-cpu"
 version = "0.1.0"
 dependencies = [
@@ -204,6 +208,8 @@ dependencies = [
 name = "rremu-harness"
 version = "0.1.0"
 dependencies = [
+ "rremu-am",
+ "rremu-config",
  "rremu-loader",
  "rremu-machine",
  "serde",
@@ -227,6 +233,7 @@ name = "rremu-machine"
 version = "0.1.0"
 dependencies = [
  "rremu-bus",
+ "rremu-config",
  "rremu-cpu",
  "rremu-decode",
  "rremu-devices",

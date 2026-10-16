@@ -5,7 +5,7 @@ mod outcome;
 use std::path::PathBuf;
 use std::process::Command;
 
-use rremu_machine::{MachineBuilder, RunResult};
+use rremu_machine::{Machine, RunResult};
 use rremu_loader::load_elf;
 
 use outcome::{Expect, Tests};
@@ -58,16 +58,12 @@ fn main() {
             }
         };
 
-        let mut builder = MachineBuilder::new()
-            .uart(0x1000_0000)
-            .clint(0x0200_0000)
-            .load(image);
-        if spec.fb == Some(true) {
-            builder = builder.framebuffer(0x2000_0000, 640, 480);
+        // 统一配置：默认布局（uart/clint/fb）；非 fb 用例不映射 framebuffer
+        let mut cfg = rremu_config::Config::default();
+        if spec.fb != Some(true) {
+            cfg.layout.fb = None;
         }
-        let mut machine = builder.build().expect("machine build failed");
-        // dump 保留最近 64 条事件
-        machine.set_event_ring_capacity(64, 1024);
+        let mut machine = Machine::from_config(&cfg, Some(image)).expect("machine build failed");
 
         if let Some(input) = &spec.uart_preload {
             for byte in input.bytes() {
@@ -130,5 +126,22 @@ fn write_dump(machine: &rremu_machine::Machine, name: &str, elf: &PathBuf) {
             Err(e) => eprintln!("  (dump write failed: {e})"),
         },
         Err(e) => eprintln!("  (dump serialize failed: {e})"),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    /// 跨仓库一致性护栏：`rremu-am/arch.rs`（人工镜像）必须与
+    /// `rremu-config` 的默认值一致；漂移会被此测试立即抓住。
+    #[test]
+    fn config_defaults_match_am_arch() {
+        use rremu_config::*;
+        assert_eq!(rremu_am::arch::RAM_BASE, DEFAULT_RAM_BASE);
+        assert_eq!(rremu_am::arch::RAM_SIZE, DEFAULT_RAM_SIZE);
+        assert_eq!(rremu_am::arch::UART_BASE, DEFAULT_UART_BASE);
+        assert_eq!(rremu_am::arch::CLINT_BASE, DEFAULT_CLINT_BASE);
+        assert_eq!(rremu_am::arch::FB_BASE, DEFAULT_FB_BASE);
+        assert_eq!(rremu_am::arch::FB_WIDTH, DEFAULT_FB_WIDTH);
+        assert_eq!(rremu_am::arch::FB_HEIGHT, DEFAULT_FB_HEIGHT);
     }
 }
