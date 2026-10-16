@@ -66,6 +66,8 @@ fn main() {
             builder = builder.framebuffer(0x2000_0000, 640, 480);
         }
         let mut machine = builder.build().expect("machine build failed");
+        // dump 保留最近 64 条事件
+        machine.set_event_ring_capacity(64, 1024);
 
         if let Some(input) = &spec.uart_preload {
             for byte in input.bytes() {
@@ -102,6 +104,7 @@ fn main() {
             passed += 1;
         } else {
             println!("  [FAIL] {} — expected {:?}, got {:?}", spec.name, expect, result);
+            write_dump(&machine, &spec.name, &elf_path);
             failed += 1;
         }
     }
@@ -109,5 +112,22 @@ fn main() {
     println!("\n{} passed, {} failed", passed, failed);
     if failed > 0 {
         std::process::exit(1);
+    }
+}
+
+/// 失败用例写出机器状态 dump（`dumps/<name>.json`），供 rremu-report 分析。
+fn write_dump(machine: &rremu_machine::Machine, name: &str, elf: &PathBuf) {
+    let dir = PathBuf::from("dumps");
+    if let Err(e) = std::fs::create_dir_all(&dir) {
+        eprintln!("  (dump: cannot create {}: {e})", dir.display());
+        return;
+    }
+    let path = dir.join(format!("{name}.json"));
+    match machine.dump(elf.to_str()).to_json() {
+        Ok(json) => match std::fs::write(&path, json) {
+            Ok(()) => println!("  dump written: {} (rremu-report {})", path.display(), path.display()),
+            Err(e) => eprintln!("  (dump write failed: {e})"),
+        },
+        Err(e) => eprintln!("  (dump serialize failed: {e})"),
     }
 }
