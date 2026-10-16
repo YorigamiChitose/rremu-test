@@ -48,3 +48,5 @@ cd harness && cargo run --release --bin rremu-harness
 - `cte_mtval` 验证 trap 后 `mtval` 记录故障地址；`csr_mip` 验证 `mip` 的 MSIP 位由设备 pending 投影
 - `cte_default_handler` 验证未调 `trap_init` 时的默认陷阱处理：AM 启动装 mtvec，默认 handler 记录 mcause/mepc 后 `halt(0x10)`
 - `edge_null_addr` 显式 `csrw mtvec, zero` 模拟无 handler，预期 Timeout（自旋）
+- 失败用例会自动写出 `harness/dumps/<name>.json`，可用 `rremu-report`（rremu-am workspace）
+  解析为可读报告（退出码语义、trap 原因、寄存器/trace）
