@@ -5,7 +5,7 @@ rremu 模拟器的**端到端固件级测试工程**。Cargo workspace，包含�
 | 成员 | 说明 |
 |---|---|
 | `guest/` | `no_std` RV32 测试二进制 crate（`riscv32imac-unknown-none-elf`），每个 `src/bin/*.rs` 是一个独立测试用例，链接 [rremu-am](../rremu-am) HAL |
-| `harness/` | host 侧运行器：解析 `guest/Tests.toml` → 构建 guest → 加载 ELF → 经 rremu-machine 执行并断言结果 |
+| `harness/` | host 侧运行器：解析 `guest/Tests.toml` → 构建 guest → 加载 ELF → 经 rremu-machine（用 `rremu-config` 构造机器）执行并断言结果 |
 
 ## 运行
 
@@ -50,3 +50,13 @@ cd harness && cargo run --release --bin rremu-harness
 - `edge_null_addr` 显式 `csrw mtvec, zero` 模拟无 handler，预期 Timeout（自旋）
 - 失败用例会自动写出 `harness/dumps/<name>.json`，可用 `rremu-report`（rremu-am workspace）
   解析为可读报告（退出码语义、trap 原因、寄存器/trace）
+
+## 跨仓库一致性
+
+harness 同时依赖 `rremu-config`（path）与 `rremu-am`（path），其单测
+`config_defaults_match_am_arch` 断言 `rremu-am/arch.rs`（人工镜像）与
+`rremu-config` 默认值逐项相等。地址若在某侧漂移，此测试会立即失败。
+
+```sh
+cd harness && cargo test
+```
