@@ -123,7 +123,8 @@ fn write_dump(machine: &rremu_machine::Machine, name: &str, elf: &PathBuf) {
         return;
     }
     let path = dir.join(format!("{name}.json"));
-    match machine.dump(elf.to_str()).to_json() {
+    let elf_ref = elf.to_str().map(rremu_machine::dump::ElfRef::from_path);
+    match machine.dump(elf_ref).to_json() {
         Ok(json) => match std::fs::write(&path, json) {
             Ok(()) => println!("  dump written: {} (rremu-report {})", path.display(), path.display()),
             Err(e) => eprintln!("  (dump write failed: {e})"),
