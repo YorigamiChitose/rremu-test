@@ -25,6 +25,10 @@ pub struct TestSpec {
     /// 运行结束后从 UART 输出缓冲取出的字节应与此字符串精确匹配。
     pub uart_expect: Option<String>,
     pub fb: Option<bool>,
+    /// 覆盖启动 hartid（默认 0）。
+    pub boot_hartid: Option<u32>,
+    /// 覆盖启动 DTB 地址（默认不注入）。
+    pub boot_dtb: Option<u32>,
 }
 
 impl TestSpec {

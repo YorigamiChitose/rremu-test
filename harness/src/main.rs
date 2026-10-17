@@ -63,6 +63,12 @@ fn main() {
         if spec.fb != Some(true) {
             cfg.layout.fb = None;
         }
+        if let Some(hartid) = spec.boot_hartid {
+            cfg.boot.hartid = hartid;
+        }
+        if let Some(dtb) = spec.boot_dtb {
+            cfg.boot.dtb = Some(dtb);
+        }
         let mut machine = Machine::from_config(&cfg, Some(image)).expect("machine build failed");
 
         if let Some(input) = &spec.uart_preload {
