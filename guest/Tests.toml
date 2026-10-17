@@ -213,3 +213,13 @@ name = "dtb_load"
 expect = "Pass"
 max_instrs = 10000
 dtb_hex = "d00dfeed00000038"
+
+[[test]]
+name = "sv32_identity"
+expect = "Pass"
+max_instrs = 100000
+
+[[test]]
+name = "sv32_page_fault"
+expect = "Pass"
+max_instrs = 100000
