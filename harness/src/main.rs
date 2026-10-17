@@ -2,7 +2,7 @@
 
 mod outcome;
 
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 use rremu_machine::{Machine, RunResult};
@@ -103,15 +103,13 @@ fn main() {
         };
 
         // UART 输出校验：取走缓冲并与期望串比较
-        if ok {
-            if let Some(want) = &spec.uart_expect {
-                let got = machine.drain_uart();
-                let got_str = String::from_utf8_lossy(&got);
-                if got_str.as_ref() != want {
-                    println!("  [FAIL] {} — UART output mismatch: expected {:?}, got {:?}", spec.name, want, got_str);
-                    failed += 1;
-                    continue;
-                }
+        if ok && let Some(want) = &spec.uart_expect {
+            let got = machine.drain_uart();
+            let got_str = String::from_utf8_lossy(&got);
+            if got_str.as_ref() != want {
+                println!("  [FAIL] {} — UART output mismatch: expected {:?}, got {:?}", spec.name, want, got_str);
+                failed += 1;
+                continue;
             }
         }
 
@@ -132,7 +130,7 @@ fn main() {
 }
 
 /// 失败用例写出机器状态 dump（`dumps/<name>.json`），供 rremu-report 分析。
-fn write_dump(machine: &rremu_machine::Machine, name: &str, elf: &PathBuf) {
+fn write_dump(machine: &rremu_machine::Machine, name: &str, elf: &Path) {
     let dir = PathBuf::from("dumps");
     if let Err(e) = std::fs::create_dir_all(&dir) {
         eprintln!("  (dump: cannot create {}: {e})", dir.display());
@@ -147,6 +145,18 @@ fn write_dump(machine: &rremu_machine::Machine, name: &str, elf: &PathBuf) {
         },
         Err(e) => eprintln!("  (dump serialize failed: {e})"),
     }
+}
+
+/// 解析十六进制字节串（允许空白分隔）。
+fn parse_hex(s: &str) -> Result<Vec<u8>, String> {
+    let compact: String = s.chars().filter(|c| !c.is_whitespace()).collect();
+    if !compact.len().is_multiple_of(2) {
+        return Err("odd number of hex digits".into());
+    }
+    (0..compact.len())
+        .step_by(2)
+        .map(|i| u8::from_str_radix(&compact[i..i + 2], 16).map_err(|e| e.to_string()))
+        .collect()
 }
 
 #[cfg(test)]
@@ -167,14 +177,3 @@ mod tests {
     }
 }
 
-/// 解析十六进制字节串（允许空白分隔）。
-fn parse_hex(s: &str) -> Result<Vec<u8>, String> {
-    let compact: String = s.chars().filter(|c| !c.is_whitespace()).collect();
-    if compact.len() % 2 != 0 {
-        return Err("odd number of hex digits".into());
-    }
-    (0..compact.len())
-        .step_by(2)
-        .map(|i| u8::from_str_radix(&compact[i..i + 2], 16).map_err(|e| e.to_string()))
-        .collect()
-}

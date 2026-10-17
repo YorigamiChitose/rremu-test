@@ -15,6 +15,7 @@ extern "C" fn m_halt() -> ! {
 }
 
 /// 安装到 `trap_init` 的 M-mode handler：只接受 S-mode ecall，其余按默认错误退出。
+#[allow(clippy::not_unsafe_ptr_arg_deref)]
 pub extern "C" fn supervisor_exit_handler(_ev: Event, ctx: *mut Context) -> *mut Context {
     unsafe {
         if (*ctx).mcause == 9 {
