@@ -201,3 +201,9 @@ max_instrs = 10000
 name = "smode_delegate_ecall"
 expect = "Pass"
 max_instrs = 10000
+
+[[test]]
+name = "load_base_pie"
+expect = "Pass"
+max_instrs = 10000
+load_base = 4096
