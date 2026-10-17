@@ -186,3 +186,13 @@ expect = "Pass"
 max_instrs = 10000
 boot_hartid = 7
 boot_dtb = 2147487744
+
+[[test]]
+name = "smode_illegal_mcsr"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "smode_sfence"
+expect = "Pass"
+max_instrs = 10000
