@@ -223,3 +223,19 @@ max_instrs = 100000
 name = "sv32_page_fault"
 expect = "Pass"
 max_instrs = 100000
+
+[[test]]
+name = "s_irq_software"
+expect = "Pass"
+max_instrs = 100000
+
+[[test]]
+name = "s_irq_timer"
+expect = "Pass"
+max_instrs = 100000
+
+[[test]]
+name = "s_irq_external"
+expect = "Pass"
+max_instrs = 100000
+uart_preload = "A"
