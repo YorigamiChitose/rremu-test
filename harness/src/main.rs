@@ -140,6 +140,7 @@ mod tests {
         assert_eq!(rremu_am::arch::RAM_SIZE, DEFAULT_RAM_SIZE);
         assert_eq!(rremu_am::arch::UART_BASE, DEFAULT_UART_BASE);
         assert_eq!(rremu_am::arch::CLINT_BASE, DEFAULT_CLINT_BASE);
+        assert_eq!(rremu_am::arch::PLIC_BASE, DEFAULT_PLIC_BASE);
         assert_eq!(rremu_am::arch::FB_BASE, DEFAULT_FB_BASE);
         assert_eq!(rremu_am::arch::FB_WIDTH, DEFAULT_FB_WIDTH);
         assert_eq!(rremu_am::arch::FB_HEIGHT, DEFAULT_FB_HEIGHT);
