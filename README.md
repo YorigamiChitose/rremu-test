@@ -27,8 +27,10 @@ cd harness && cargo run --release --bin rremu-harness
 | `uart_preload` | 可选，运行前预注入 UART RX 的字节串 |
 | `uart_expect` | 可选，运行结束后 UART 输出缓冲须与此串精确匹配 |
 | `fb` | 可选，为 true 时映射 framebuffer 设备 |
+| `boot_hartid` / `boot_dtb` | 可选，覆盖启动时注入的 a0/a1 |
+| `load_base` | 可选，将 ELF 段与入口整体平移到该基址 |
 
-## 用例清单（40 个）
+## 用例清单（41 个）
 
 | 分类 | 用例 |
 |---|---|
@@ -38,7 +40,7 @@ cd harness && cargo run --release --bin rremu-harness
 | CTE（14） | cte_yield / cte_syscall / cte_breakpoint / cte_ill_insn / cte_load_fault / cte_store_fault / cte_misalign_load / cte_misalign_store / cte_irq_timer / cte_irq_software / cte_ctx_switch / cte_preserve_regs / cte_mtval / cte_default_handler |
 | CSR（6） | csr_rw / csr_set_clear / csr_imm / csr_counters / csr_mhartid / csr_mip |
 | S-mode（5） | smode_sret / smode_csr / smode_illegal_mcsr / smode_sfence / smode_delegate_ecall |
-| 启动注入（1） | boot_args |
+| 启动注入（2） | boot_args / load_base_pie |
 | 断言矩阵（2） | fail_case（Fail）/ cte_vectored_mtvec（Fault） |
 | 边界（2） | edge_div_zero / edge_null_addr |
 
