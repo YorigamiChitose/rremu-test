@@ -179,3 +179,10 @@ max_instrs = 10000
 name = "smode_csr"
 expect = "Pass"
 max_instrs = 10000
+
+[[test]]
+name = "boot_args"
+expect = "Pass"
+max_instrs = 10000
+boot_hartid = 7
+boot_dtb = 2147487744
