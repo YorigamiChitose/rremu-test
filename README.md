@@ -29,8 +29,9 @@ cd harness && cargo run --release --bin rremu-harness
 | `fb` | 可选，为 true 时映射 framebuffer 设备 |
 | `boot_hartid` / `boot_dtb` | 可选，覆盖启动时注入的 a0/a1 |
 | `load_base` | 可选，将 ELF 段与入口整体平移到该基址 |
+| `dtb_hex` | 可选，将十六进制 DTB 字节加载到 RAM 顶部并注入 boot a1 |
 
-## 用例清单（41 个）
+## 用例清单（42 个）
 
 | 分类 | 用例 |
 |---|---|
@@ -40,7 +41,7 @@ cd harness && cargo run --release --bin rremu-harness
 | CTE（14） | cte_yield / cte_syscall / cte_breakpoint / cte_ill_insn / cte_load_fault / cte_store_fault / cte_misalign_load / cte_misalign_store / cte_irq_timer / cte_irq_software / cte_ctx_switch / cte_preserve_regs / cte_mtval / cte_default_handler |
 | CSR（6） | csr_rw / csr_set_clear / csr_imm / csr_counters / csr_mhartid / csr_mip |
 | S-mode（5） | smode_sret / smode_csr / smode_illegal_mcsr / smode_sfence / smode_delegate_ecall |
-| 启动注入（2） | boot_args / load_base_pie |
+| 启动注入（3） | boot_args / load_base_pie / dtb_load |
 | 断言矩阵（2） | fail_case（Fail）/ cte_vectored_mtvec（Fault） |
 | 边界（2） | edge_div_zero / edge_null_addr |
 
@@ -54,6 +55,8 @@ cd harness && cargo run --release --bin rremu-harness
 - `edge_null_addr` 显式 `csrw mtvec, zero` 模拟无 handler，预期 Timeout（自旋）
 - S-mode 用例经 `rremu_am::enter_supervisor` 从 M 进入 S；`guest/src/lib.rs` 的
   `supervisor_exit_handler` 把 S-mode `halt(code)` 的 ecall 桥接回 M-mode 后退出
+- 委派类 S 陷阱经 `rremu_am::trap_init_s` / `SContext` 处理；`dtb_load` 验证
+  `dtb_hex` 实际写入 RAM 顶部且 boot `a1` 指向该内容
 - 失败用例会自动写出 `harness/dumps/<name>.json`，可用 `rremu-report`（rremu-am workspace）
   解析为可读报告（退出码语义、trap 原因、寄存器/trace）
 
