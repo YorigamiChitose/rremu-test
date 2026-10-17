@@ -196,3 +196,8 @@ max_instrs = 10000
 name = "smode_sfence"
 expect = "Pass"
 max_instrs = 10000
+
+[[test]]
+name = "smode_delegate_ecall"
+expect = "Pass"
+max_instrs = 10000
