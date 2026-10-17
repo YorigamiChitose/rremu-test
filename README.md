@@ -28,7 +28,7 @@ cd harness && cargo run --release --bin rremu-harness
 | `uart_expect` | 可选，运行结束后 UART 输出缓冲须与此串精确匹配 |
 | `fb` | 可选，为 true 时映射 framebuffer 设备 |
 
-## 用例清单（39 个）
+## 用例清单（40 个）
 
 | 分类 | 用例 |
 |---|---|
@@ -37,7 +37,7 @@ cd harness && cargo run --release --bin rremu-harness
 | 设备（3） | uart_output / uart_input / clint_timer |
 | CTE（14） | cte_yield / cte_syscall / cte_breakpoint / cte_ill_insn / cte_load_fault / cte_store_fault / cte_misalign_load / cte_misalign_store / cte_irq_timer / cte_irq_software / cte_ctx_switch / cte_preserve_regs / cte_mtval / cte_default_handler |
 | CSR（6） | csr_rw / csr_set_clear / csr_imm / csr_counters / csr_mhartid / csr_mip |
-| S-mode（4） | smode_sret / smode_csr / smode_illegal_mcsr / smode_sfence |
+| S-mode（5） | smode_sret / smode_csr / smode_illegal_mcsr / smode_sfence / smode_delegate_ecall |
 | 启动注入（1） | boot_args |
 | 断言矩阵（2） | fail_case（Fail）/ cte_vectored_mtvec（Fault） |
 | 边界（2） | edge_div_zero / edge_null_addr |
