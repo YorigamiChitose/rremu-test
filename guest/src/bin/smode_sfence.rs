@@ -3,7 +3,7 @@
 #![no_std]
 #![no_main]
 
-use rremu_am::{enter_supervisor, halt, trap_init};
+use rremu_am::{enter_supervisor, halt, pmp_allow_all, trap_init};
 use rremu_guest::supervisor_exit_handler;
 
 #[panic_handler]
@@ -20,6 +20,7 @@ extern "C" fn s_entry() -> ! {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
+    pmp_allow_all();
     trap_init(supervisor_exit_handler);
     enter_supervisor(s_entry as *const () as usize as u32, 0, 0)
 }

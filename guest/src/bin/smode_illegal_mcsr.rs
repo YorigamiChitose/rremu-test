@@ -6,7 +6,7 @@
 #![no_std]
 #![no_main]
 
-use rremu_am::{Context, Event, enter_supervisor, halt, trap_init};
+use rremu_am::{Context, Event, enter_supervisor, halt, pmp_allow_all, trap_init};
 
 #[panic_handler]
 fn panic(_: &core::panic::PanicInfo) -> ! {
@@ -31,6 +31,7 @@ extern "C" fn s_entry() -> ! {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
+    pmp_allow_all();
     trap_init(expect_illegal);
     enter_supervisor(s_entry as *const () as usize as u32, 0, 0)
 }

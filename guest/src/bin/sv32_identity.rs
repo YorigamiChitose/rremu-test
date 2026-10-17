@@ -8,7 +8,7 @@
 
 use core::ptr::{addr_of_mut, write_volatile};
 
-use rremu_am::{enter_supervisor, halt, trap_init};
+use rremu_am::{enter_supervisor, halt, pmp_allow_all, trap_init};
 use rremu_guest::supervisor_exit_handler;
 
 const PTE_V: u32 = 1 << 0;
@@ -49,6 +49,7 @@ extern "C" fn s_entry() -> ! {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
+    pmp_allow_all();
     trap_init(supervisor_exit_handler);
     let root = map_identity_superpages();
     unsafe {

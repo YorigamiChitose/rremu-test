@@ -4,7 +4,7 @@
 #![no_main]
 
 use rremu_am::{
-    Event, SContext, enter_supervisor, halt, trap_init, trap_init_s,
+    Event, SContext, enter_supervisor, halt, pmp_allow_all, trap_init, trap_init_s,
 };
 use rremu_guest::supervisor_exit_handler;
 
@@ -29,6 +29,7 @@ extern "C" fn s_entry() -> ! {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
+    pmp_allow_all();
     trap_init(supervisor_exit_handler);
     trap_init_s(s_handler);
     unsafe {

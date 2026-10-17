@@ -5,7 +5,7 @@
 
 use core::ptr::{addr_of_mut, write_volatile};
 
-use rremu_am::{Context, Event, enter_supervisor, halt, trap_init};
+use rremu_am::{Context, Event, enter_supervisor, halt, pmp_allow_all, trap_init};
 
 const PTE_V: u32 = 1 << 0;
 const PTE_R: u32 = 1 << 1;
@@ -51,6 +51,7 @@ extern "C" fn s_entry() -> ! {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
+    pmp_allow_all();
     trap_init(expect_load_page_fault);
     let root = map_code_superpage();
     unsafe {
