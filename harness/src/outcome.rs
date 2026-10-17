@@ -29,6 +29,8 @@ pub struct TestSpec {
     pub boot_hartid: Option<u32>,
     /// 覆盖启动 DTB 地址（默认不注入）。
     pub boot_dtb: Option<u32>,
+    /// 将 ELF 段与入口整体平移到该基址。
+    pub load_base: Option<u32>,
 }
 
 impl TestSpec {

@@ -49,7 +49,7 @@ fn main() {
                 continue;
             }
         };
-        let image = match load_elf(&bytes) {
+        let mut image = match load_elf(&bytes) {
             Ok(img) => img,
             Err(e) => {
                 eprintln!("  [SKIP] {} — ELF parse: {e}", spec.name);
@@ -57,6 +57,10 @@ fn main() {
                 continue;
             }
         };
+
+        if let Some(base) = spec.load_base {
+            image.relocate(base);
+        }
 
         // 统一配置：默认布局（uart/clint/fb）；非 fb 用例不映射 framebuffer
         let mut cfg = rremu_config::Config::default();
