@@ -169,3 +169,13 @@ max_instrs = 10000
 name = "cte_mtval"
 expect = "Pass"
 max_instrs = 10000
+
+[[test]]
+name = "smode_sret"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "smode_csr"
+expect = "Pass"
+max_instrs = 10000
