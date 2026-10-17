@@ -207,3 +207,9 @@ name = "load_base_pie"
 expect = "Pass"
 max_instrs = 10000
 load_base = 4096
+
+[[test]]
+name = "dtb_load"
+expect = "Pass"
+max_instrs = 10000
+dtb_hex = "d00dfeed00000038"
