@@ -1,36 +1,33 @@
-//! S-mode 委派测试：`medeleg` 把 S-mode ecall 交给 S 的 `stvec`。
+//! S-mode 委派测试：`medeleg` 把 S-mode ecall 交给 AM 的 S 陷阱入口。
 //!
 //! S handler 校验 `scause=9` 后执行非法指令，让 M handler 观察结果并退出。
-//! 这样同时验证委派路径、`scause` 以及 S-mode handler 的进入地址。
+//! 同时验证委派路径、`scause` 与 `__am_asm_strap` / `SContext` 布局。
 
 #![no_std]
 #![no_main]
 
-use rremu_am::{Context, Event, enter_supervisor, halt, trap_init};
+use rremu_am::{
+    Context, Event, SContext, enter_supervisor, halt, trap_init, trap_init_s,
+};
 
 #[panic_handler]
 fn panic(_: &core::panic::PanicInfo) -> ! {
     halt(1)
 }
 
-/// S-mode 陷阱入口：只验证 cause，然后主动触发未委派的 illegal 回到 M。
-extern "C" fn s_trap() -> ! {
+/// S-mode handler：校验 cause，然后主动触发未委派的 illegal 回到 M。
+extern "C" fn s_handler(_ev: Event, ctx: *mut SContext) -> *mut SContext {
     unsafe {
-        core::arch::asm!(
-            "csrr t0, scause",
-            "li t1, 9",
-            "li a0, 1",
-            "bne t0, t1, 2f",
-            "li a0, 0",
-            "2:",
-            "unimp",
-            clobber_abi("C"),
-            options(noreturn),
-        );
+        if (*ctx).scause == 9 {
+            (*ctx).gpr[10] = 0;
+        } else {
+            (*ctx).gpr[10] = 1;
+        }
+        core::arch::asm!("unimp", options(noreturn));
     }
 }
 
-/// M handler：S trap handler 的 `unimp` 应带来 mcause=2，a0=0 表示 scause 正确。
+/// M handler：S handler 的 `unimp` 应带来 mcause=2，a0=0 表示 scause 正确。
 extern "C" fn m_handler(_ev: Event, ctx: *mut Context) -> *mut Context {
     unsafe {
         if (*ctx).mcause == 2 && (*ctx).gpr[10] == 0 {
@@ -50,13 +47,11 @@ extern "C" fn s_entry() -> ! {
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
     trap_init(m_handler);
+    trap_init_s(s_handler);
     unsafe {
         core::arch::asm!(
-            "la t0, {s_trap}",
-            "csrw stvec, t0",
             "li t0, {ecall_s}",
             "csrw medeleg, t0",
-            s_trap = sym s_trap,
             ecall_s = const (1u32 << 9),
             out("t0") _,
         );
