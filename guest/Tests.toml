@@ -141,6 +141,12 @@ expect = "Pass"
 max_instrs = 10000
 
 [[test]]
+name = "csr_unimplemented"
+expect = "Pass"
+max_instrs = 10000
+
+
+[[test]]
 name = "edge_div_zero"
 expect = "Pass"
 max_instrs = 10000
@@ -225,6 +231,11 @@ expect = "Pass"
 max_instrs = 100000
 
 [[test]]
+name = "sv32_store_page_fault"
+expect = "Pass"
+max_instrs = 100000
+
+[[test]]
 name = "s_irq_software"
 expect = "Pass"
 max_instrs = 100000
@@ -242,6 +253,11 @@ uart_preload = "A"
 
 [[test]]
 name = "pmp_enforce_load"
+expect = "Pass"
+max_instrs = 100000
+
+[[test]]
+name = "pmp_enforce_store"
 expect = "Pass"
 max_instrs = 100000
 
