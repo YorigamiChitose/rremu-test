@@ -239,3 +239,13 @@ name = "s_irq_external"
 expect = "Pass"
 max_instrs = 100000
 uart_preload = "A"
+
+[[test]]
+name = "pmp_enforce_load"
+expect = "Pass"
+max_instrs = 100000
+
+[[test]]
+name = "smode_sret_u"
+expect = "Pass"
+max_instrs = 100000
