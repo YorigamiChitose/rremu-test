@@ -31,6 +31,8 @@ pub struct TestSpec {
     pub boot_dtb: Option<u32>,
     /// 将 ELF 段与入口整体平移到该基址。
     pub load_base: Option<u32>,
+    /// 加载到 RAM 顶部的 DTB 字节（十六进制字符串），同时设置 boot a1。
+    pub dtb_hex: Option<String>,
 }
 
 impl TestSpec {

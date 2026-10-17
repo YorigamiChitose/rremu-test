@@ -73,7 +73,17 @@ fn main() {
         if let Some(dtb) = spec.boot_dtb {
             cfg.boot.dtb = Some(dtb);
         }
+        let dtb = spec.dtb_hex.as_ref().map(|hex| {
+            let bytes = parse_hex(hex).unwrap_or_else(|e| panic!("{}: invalid dtb_hex: {e}", spec.name));
+            let addr = cfg.place_dtb().unwrap_or_else(|e| panic!("{}: DTB placement failed: {e}", spec.name));
+            (addr, bytes)
+        });
+
         let mut machine = Machine::from_config(&cfg, Some(image)).expect("machine build failed");
+
+        if let Some((addr, bytes)) = &dtb {
+            machine.write_mem(*addr, bytes).unwrap_or_else(|e| panic!("{}: DTB load failed: {e}", spec.name));
+        }
 
         if let Some(input) = &spec.uart_preload {
             for byte in input.bytes() {
@@ -155,4 +165,16 @@ mod tests {
         assert_eq!(rremu_am::arch::FB_WIDTH, DEFAULT_FB_WIDTH);
         assert_eq!(rremu_am::arch::FB_HEIGHT, DEFAULT_FB_HEIGHT);
     }
+}
+
+/// 解析十六进制字节串（允许空白分隔）。
+fn parse_hex(s: &str) -> Result<Vec<u8>, String> {
+    let compact: String = s.chars().filter(|c| !c.is_whitespace()).collect();
+    if compact.len() % 2 != 0 {
+        return Err("odd number of hex digits".into());
+    }
+    (0..compact.len())
+        .step_by(2)
+        .map(|i| u8::from_str_radix(&compact[i..i + 2], 16).map_err(|e| e.to_string()))
+        .collect()
 }
