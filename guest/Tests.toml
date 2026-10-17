@@ -249,3 +249,8 @@ max_instrs = 100000
 name = "smode_sret_u"
 expect = "Pass"
 max_instrs = 100000
+
+[[test]]
+name = "rtc_syscon"
+expect = "Pass"
+max_instrs = 10000

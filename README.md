@@ -31,7 +31,7 @@ cd harness && cargo run --release --bin rremu-harness
 | `load_base` | 可选，将 ELF 段与入口整体平移到该基址 |
 | `dtb_hex` | 可选，将十六进制 DTB 字节加载到 RAM 顶部并注入 boot a1 |
 
-## 用例清单（49 个）
+## 用例清单（50 个）
 
 | 分类 | 用例 |
 |---|---|
@@ -43,6 +43,7 @@ cd harness && cargo run --release --bin rremu-harness
 | S-mode（6） | smode_sret / smode_sret_u / smode_csr / smode_illegal_mcsr / smode_sfence / smode_delegate_ecall |
 | S 中断（3） | s_irq_software / s_irq_timer / s_irq_external |
 | PMP（1） | pmp_enforce_load |
+| RTC/syscon（1） | rtc_syscon |
 | Sv32（2） | sv32_identity / sv32_page_fault |
 | 启动注入（3） | boot_args / load_base_pie / dtb_load |
 | 断言矩阵（2） | fail_case（Fail）/ cte_vectored_mtvec（Fault） |
