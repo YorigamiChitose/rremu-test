@@ -65,13 +65,13 @@ fn main() {
         // 统一配置：默认布局（uart/clint/fb）；非 fb 用例不映射 framebuffer
         let mut cfg = rremu_config::Config::default();
         if spec.fb != Some(true) {
-            cfg.layout.fb = None;
+            cfg = cfg.with_fb(None);
         }
         if let Some(hartid) = spec.boot_hartid {
-            cfg.boot.hartid = hartid;
+            cfg = cfg.with_boot_hartid(hartid);
         }
         if let Some(dtb) = spec.boot_dtb {
-            cfg.boot.dtb = Some(dtb);
+            cfg = cfg.with_boot_dtb_addr(Some(dtb));
         }
         let dtb_bytes = spec.dtb_hex.as_ref().map(|hex| {
             parse_hex(hex).unwrap_or_else(|e| panic!("{}: invalid dtb_hex: {e}", spec.name))
@@ -82,7 +82,7 @@ fn main() {
         } else {
             cfg
         };
-        let dtb = dtb_bytes.map(|bytes| (cfg.boot.dtb.expect("DTB address missing"), bytes));
+        let dtb = dtb_bytes.map(|bytes| (cfg.boot().dtb.expect("DTB address missing"), bytes));
 
         let mut machine = Machine::from_config(&cfg, Some(image)).expect("machine build failed");
 
