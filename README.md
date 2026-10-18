@@ -22,7 +22,7 @@ cd harness && cargo run --release --bin rremu-harness
 | 字段 | 说明 |
 |---|---|
 | `name` | 测试名（= guest bin 名 = ELF 文件名） |
-| `expect` | `"Pass"`（exit 0）/ `"Fail"`（exit 非 0）/ `"Fault:<substr>"` / `"Timeout"` |
+| `expect` | `"Pass"`（exit 0）/ `"Fail"`（exit 非 0）/ `"Exit:<code>"` / `"Fault:<substr>"` / `"Timeout"` |
 | `max_instrs` | 指令数上限，超出判 Paused |
 | `uart_preload` | 可选，运行前预注入 UART RX 的字节串 |
 | `uart_expect` | 可选，运行结束后 UART 输出缓冲须与此串精确匹配 |
@@ -31,7 +31,7 @@ cd harness && cargo run --release --bin rremu-harness
 | `load_base` | 可选，将 ELF 段与入口整体平移到该基址 |
 | `dtb_hex` | 可选，将十六进制 DTB 字节加载到 RAM 顶部并注入 boot a1 |
 
-## 用例清单（53 个）
+## 用例清单（54 个）
 
 | 分类 | 用例 |
 |---|---|
@@ -43,7 +43,7 @@ cd harness && cargo run --release --bin rremu-harness
 | S-mode（6） | smode_sret / smode_sret_u / smode_csr / smode_illegal_mcsr / smode_sfence / smode_delegate_ecall |
 | S 中断（3） | s_irq_software / s_irq_timer / s_irq_external |
 | PMP（2） | pmp_enforce_load / pmp_enforce_store |
-| RTC/syscon（1） | rtc_syscon |
+| RTC/syscon（2） | rtc_syscon / syscon_reboot |
 | Sv32（3） | sv32_identity / sv32_page_fault / sv32_store_page_fault |
 | 启动注入（3） | boot_args / load_base_pie / dtb_load |
 | 断言矩阵（2） | fail_case（Fail）/ cte_vectored_mtvec（Fault） |

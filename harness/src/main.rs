@@ -97,6 +97,7 @@ fn main() {
         let ok = match (&expect, &result) {
             (Expect::Pass, RunResult::Exited { code: 0 }) => true,
             (Expect::Fail, RunResult::Exited { code }) if *code != 0 => true,
+            (Expect::Exit(want), RunResult::Exited { code }) if code == want => true,
             (Expect::Fault(substr), RunResult::Faulted { reason }) => reason.contains(substr.as_str()),
             (Expect::Timeout, RunResult::Paused) => true,
             _ => false,

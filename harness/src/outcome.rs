@@ -9,6 +9,8 @@ pub enum Expect {
     Pass,
     /// 以非零 code 退出。
     Fail,
+    /// 以指定 code 退出。
+    Exit(i32),
     /// 以 Faulted 终止，reason 包含 substr。
     Fault(String),
     /// 达到 max_instrs 仍未退出（step_n 返回 Paused）。
@@ -41,6 +43,9 @@ impl TestSpec {
             "Pass" => Expect::Pass,
             "Fail" => Expect::Fail,
             "Timeout" => Expect::Timeout,
+            s if s.starts_with("Exit:") => {
+                Expect::Exit(s["Exit:".len()..].parse().expect("invalid Exit code"))
+            }
             s if s.starts_with("Fault:") => {
                 Expect::Fault(s["Fault:".len()..].to_string())
             }

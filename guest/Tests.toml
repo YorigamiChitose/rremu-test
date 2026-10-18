@@ -270,3 +270,8 @@ max_instrs = 100000
 name = "rtc_syscon"
 expect = "Pass"
 max_instrs = 10000
+
+[[test]]
+name = "syscon_reboot"
+expect = "Exit:2"
+max_instrs = 10000
