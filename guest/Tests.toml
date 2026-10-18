@@ -275,3 +275,18 @@ max_instrs = 10000
 name = "syscon_reboot"
 expect = "Exit:2"
 max_instrs = 10000
+
+[[test]]
+name = "csr_sip_readonly"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "pmp_lock_write"
+expect = "Pass"
+max_instrs = 10000
+
+[[test]]
+name = "counteren_rw"
+expect = "Pass"
+max_instrs = 10000
