@@ -73,11 +73,16 @@ fn main() {
         if let Some(dtb) = spec.boot_dtb {
             cfg.boot.dtb = Some(dtb);
         }
-        let dtb = spec.dtb_hex.as_ref().map(|hex| {
-            let bytes = parse_hex(hex).unwrap_or_else(|e| panic!("{}: invalid dtb_hex: {e}", spec.name));
-            let addr = cfg.place_dtb().unwrap_or_else(|e| panic!("{}: DTB placement failed: {e}", spec.name));
-            (addr, bytes)
+        let dtb_bytes = spec.dtb_hex.as_ref().map(|hex| {
+            parse_hex(hex).unwrap_or_else(|e| panic!("{}: invalid dtb_hex: {e}", spec.name))
         });
+        let cfg = if dtb_bytes.is_some() {
+            cfg.with_boot_dtb()
+                .unwrap_or_else(|e| panic!("{}: DTB placement failed: {e}", spec.name))
+        } else {
+            cfg
+        };
+        let dtb = dtb_bytes.map(|bytes| (cfg.boot.dtb.expect("DTB address missing"), bytes));
 
         let mut machine = Machine::from_config(&cfg, Some(image)).expect("machine build failed");
 
