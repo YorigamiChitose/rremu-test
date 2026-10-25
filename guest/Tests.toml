@@ -337,25 +337,21 @@ max_instrs = 100000
 name = "fp_arith_s"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_fma_s"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_convert_s"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_compare_s"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_trap_preserve"
