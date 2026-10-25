@@ -5,10 +5,14 @@
 
 #![no_std]
 #![no_main]
-#[panic_handler] fn panic(_: &core::panic::PanicInfo) -> ! { rremu_am::halt(1) }
+#[panic_handler]
+fn panic(_: &core::panic::PanicInfo) -> ! {
+    rremu_am::halt(1)
+}
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
-    let c0: u32; let i0: u32;
+    let c0: u32;
+    let i0: u32;
     unsafe {
         core::arch::asm!(
             "csrr {c0}, mcycle",
@@ -19,9 +23,14 @@ pub extern "C" fn rust_main() -> ! {
     }
     // 消耗若干周期
     let mut acc: u32 = 0;
-    for i in 0..100u32 { acc = acc.wrapping_add(i); }
-    if acc == u32::MAX { rremu_am::halt(2); }
-    let c1: u32; let i1: u32;
+    for i in 0..100u32 {
+        acc = acc.wrapping_add(i);
+    }
+    if acc == u32::MAX {
+        rremu_am::halt(2);
+    }
+    let c1: u32;
+    let i1: u32;
     unsafe {
         core::arch::asm!(
             "csrr {c1}, mcycle",
@@ -30,5 +39,9 @@ pub extern "C" fn rust_main() -> ! {
             i1 = out(reg) i1,
         );
     }
-    if c1 > c0 && i1 > i0 { rremu_am::halt(0) } else { rremu_am::halt(1) }
+    if c1 > c0 && i1 > i0 {
+        rremu_am::halt(0)
+    } else {
+        rremu_am::halt(1)
+    }
 }

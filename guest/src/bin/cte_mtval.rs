@@ -42,9 +42,5 @@ pub extern "C" fn rust_main() -> ! {
             options(nostack),
         );
     }
-    if unsafe { FLAG } {
-        halt(0)
-    } else {
-        halt(1)
-    }
+    if unsafe { FLAG } { halt(0) } else { halt(1) }
 }

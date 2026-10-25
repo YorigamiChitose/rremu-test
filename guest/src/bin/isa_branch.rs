@@ -68,7 +68,9 @@ pub extern "C" fn rust_main() -> ! {
 
     // jal/jalr 经函数调用
     let result = double(n);
-    if result != 42 { rremu_am::halt(1); }
+    if result != 42 {
+        rremu_am::halt(1);
+    }
 
     rremu_am::halt(0)
 }

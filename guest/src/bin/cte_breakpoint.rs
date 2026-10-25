@@ -5,7 +5,7 @@
 #![no_std]
 #![no_main]
 
-use rremu_am::{Context, Event, trap_init, halt};
+use rremu_am::{Context, Event, halt, trap_init};
 
 static mut FLAG: bool = false;
 
@@ -32,15 +32,8 @@ pub extern "C" fn rust_main() -> ! {
     trap_init(handler);
 
     unsafe {
-        core::arch::asm!(
-            "ebreak",
-            options(nostack),
-        );
+        core::arch::asm!("ebreak", options(nostack),);
     }
 
-    if unsafe { FLAG } {
-        halt(0)
-    } else {
-        halt(1)
-    }
+    if unsafe { FLAG } { halt(0) } else { halt(1) }
 }

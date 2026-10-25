@@ -1,7 +1,7 @@
 //! CTE 测试：STORE_FAULT 事件（向未映射地址 store）。
 #![no_std]
 #![no_main]
-use rremu_am::{Context, Event, trap_init, halt};
+use rremu_am::{Context, Event, halt, trap_init};
 static mut FLAG: bool = false;
 extern "C" fn handler(ev: Event, ctx: *mut Context) -> *mut Context {
     if ev == Event::StoreFault {
@@ -15,7 +15,10 @@ extern "C" fn handler(ev: Event, ctx: *mut Context) -> *mut Context {
     }
     ctx
 }
-#[panic_handler] fn panic(_: &core::panic::PanicInfo) -> ! { halt(1) }
+#[panic_handler]
+fn panic(_: &core::panic::PanicInfo) -> ! {
+    halt(1)
+}
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
     trap_init(handler);

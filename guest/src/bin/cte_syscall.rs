@@ -6,7 +6,7 @@
 #![no_std]
 #![no_main]
 
-use rremu_am::{Context, Event, trap_init, halt};
+use rremu_am::{Context, Event, halt, trap_init};
 
 extern "C" fn handler(ev: Event, ctx: *mut Context) -> *mut Context {
     if ev == Event::Syscall {
@@ -42,9 +42,5 @@ pub extern "C" fn rust_main() -> ! {
         );
     }
 
-    if result == 0 {
-        halt(0)
-    } else {
-        halt(1)
-    }
+    if result == 0 { halt(0) } else { halt(1) }
 }

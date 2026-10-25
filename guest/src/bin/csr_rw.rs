@@ -4,7 +4,10 @@
 
 #![no_std]
 #![no_main]
-#[panic_handler] fn panic(_: &core::panic::PanicInfo) -> ! { rremu_am::halt(1) }
+#[panic_handler]
+fn panic(_: &core::panic::PanicInfo) -> ! {
+    rremu_am::halt(1)
+}
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
     let w: u32 = 0xDEAD_BEEF;
@@ -17,5 +20,9 @@ pub extern "C" fn rust_main() -> ! {
             r = out(reg) r,
         );
     }
-    if r == 0xDEAD_BEEF { rremu_am::halt(0) } else { rremu_am::halt(1) }
+    if r == 0xDEAD_BEEF {
+        rremu_am::halt(0)
+    } else {
+        rremu_am::halt(1)
+    }
 }

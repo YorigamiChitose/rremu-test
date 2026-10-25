@@ -28,7 +28,9 @@ pub extern "C" fn rust_main() -> ! {
             a = in(reg) p as u32,
             loaded = out(reg) loaded,
         );
-        if loaded != 0x123 { rremu_am::halt(1); }
+        if loaded != 0x123 {
+            rremu_am::halt(1);
+        }
 
         // sc.w 成功：写 0x456，返回 0
         let ok: u32;
@@ -38,8 +40,12 @@ pub extern "C" fn rust_main() -> ! {
             v = in(reg) 0x456,
             ok = out(reg) ok,
         );
-        if ok != 0 { rremu_am::halt(1); }
-        if read_volatile(p) != 0x456 { rremu_am::halt(1); }
+        if ok != 0 {
+            rremu_am::halt(1);
+        }
+        if read_volatile(p) != 0x456 {
+            rremu_am::halt(1);
+        }
 
         // 再次 lr.w 建立保留，但普通 store 使其失效
         core::arch::asm!(
@@ -57,8 +63,12 @@ pub extern "C" fn rust_main() -> ! {
             v = in(reg) 0x999,
             ok = out(reg) ok,
         );
-        if ok == 0 { rremu_am::halt(1); } // 应失败
-        if read_volatile(p) != 0x789 { rremu_am::halt(1); } // sc.w 未写
+        if ok == 0 {
+            rremu_am::halt(1);
+        } // 应失败
+        if read_volatile(p) != 0x789 {
+            rremu_am::halt(1);
+        } // sc.w 未写
     }
 
     rremu_am::halt(0)

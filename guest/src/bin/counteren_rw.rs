@@ -26,9 +26,5 @@ pub extern "C" fn rust_main() -> ! {
             out("t0") _,
         );
     }
-    if m == 7 && s == 7 {
-        halt(0)
-    } else {
-        halt(1)
-    }
+    if m == 7 && s == 7 { halt(0) } else { halt(1) }
 }

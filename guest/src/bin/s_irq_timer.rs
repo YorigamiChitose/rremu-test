@@ -3,9 +3,7 @@
 #![no_std]
 #![no_main]
 
-use rremu_am::{
-    Event, SContext, enter_supervisor, halt, pmp_allow_all, trap_init, trap_init_s,
-};
+use rremu_am::{Event, SContext, enter_supervisor, halt, pmp_allow_all, trap_init, trap_init_s};
 use rremu_guest::supervisor_exit_handler;
 
 #[panic_handler]

@@ -27,12 +27,24 @@ pub extern "C" fn rust_main() -> ! {
         )
     };
 
-    if a + b != 9 { rremu_am::halt(1); }
-    if a - b != 3 { rremu_am::halt(1); }
-    if a * b != 18 { rremu_am::halt(1); }
-    if a / b != 2 { rremu_am::halt(1); }
-    if a % b != 0 { rremu_am::halt(1); }
-    if c * c != 49 { rremu_am::halt(1); }
+    if a + b != 9 {
+        rremu_am::halt(1);
+    }
+    if a - b != 3 {
+        rremu_am::halt(1);
+    }
+    if a * b != 18 {
+        rremu_am::halt(1);
+    }
+    if a / b != 2 {
+        rremu_am::halt(1);
+    }
+    if a % b != 0 {
+        rremu_am::halt(1);
+    }
+    if c * c != 49 {
+        rremu_am::halt(1);
+    }
 
     rremu_am::halt(0)
 }

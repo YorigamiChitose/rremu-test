@@ -14,13 +14,7 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 }
 
 extern "C" fn expect_illegal(_ev: Event, ctx: *mut Context) -> *mut Context {
-    unsafe {
-        if (*ctx).mcause == 2 {
-            halt(0)
-        } else {
-            halt(1)
-        }
-    }
+    unsafe { if (*ctx).mcause == 2 { halt(0) } else { halt(1) } }
 }
 
 extern "C" fn s_entry() -> ! {

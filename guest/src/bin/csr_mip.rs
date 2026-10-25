@@ -22,9 +22,5 @@ pub extern "C" fn rust_main() -> ! {
     }
     clint_set_msip(0);
 
-    if mip & 0x8 != 0 {
-        halt(0)
-    } else {
-        halt(1)
-    }
+    if mip & 0x8 != 0 { halt(0) } else { halt(1) }
 }

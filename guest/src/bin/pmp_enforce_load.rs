@@ -14,13 +14,7 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 }
 
 extern "C" fn expect_load_fault(_ev: Event, ctx: *mut Context) -> *mut Context {
-    unsafe {
-        if (*ctx).mcause == 5 {
-            halt(0)
-        } else {
-            halt(1)
-        }
-    }
+    unsafe { if (*ctx).mcause == 5 { halt(0) } else { halt(1) } }
 }
 
 extern "C" fn s_entry() -> ! {
@@ -54,4 +48,3 @@ pub extern "C" fn rust_main() -> ! {
     }
     enter_supervisor(s_entry as *const () as usize as u32, DENIED_ADDR, 0)
 }
-

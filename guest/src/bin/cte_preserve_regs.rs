@@ -6,7 +6,7 @@
 
 #![no_std]
 #![no_main]
-use rremu_am::{Context, Event, trap_init, halt};
+use rremu_am::{Context, Event, halt, trap_init};
 
 static mut CHECK_OK: bool = false;
 
@@ -14,10 +14,20 @@ extern "C" fn handler(ev: Event, ctx: *mut Context) -> *mut Context {
     if ev == Event::Yield {
         unsafe {
             let g = &(*ctx).gpr;
-            let ok = g[5]==0xA0 && g[6]==0xA1 && g[7]==0xA2
-                && g[28]==0xA3 && g[29]==0xA4 && g[30]==0xA5 && g[31]==0xA6
-                && g[10]==0xA7 && g[11]==0xA8 && g[12]==0xA9
-                && g[13]==0xAA && g[14]==0xAB && g[15]==0xAC && g[16]==0xAD;
+            let ok = g[5] == 0xA0
+                && g[6] == 0xA1
+                && g[7] == 0xA2
+                && g[28] == 0xA3
+                && g[29] == 0xA4
+                && g[30] == 0xA5
+                && g[31] == 0xA6
+                && g[10] == 0xA7
+                && g[11] == 0xA8
+                && g[12] == 0xA9
+                && g[13] == 0xAA
+                && g[14] == 0xAB
+                && g[15] == 0xAC
+                && g[16] == 0xAD;
             CHECK_OK = ok;
             let mepc = (*ctx).mepc;
             let half = core::ptr::read_volatile(mepc as *const u16);
@@ -28,7 +38,10 @@ extern "C" fn handler(ev: Event, ctx: *mut Context) -> *mut Context {
     ctx
 }
 
-#[panic_handler] fn panic(_: &core::panic::PanicInfo) -> ! { halt(1) }
+#[panic_handler]
+fn panic(_: &core::panic::PanicInfo) -> ! {
+    halt(1)
+}
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
     trap_init(handler);
@@ -58,5 +71,9 @@ pub extern "C" fn rust_main() -> ! {
             options(nostack),
         );
     }
-    if unsafe { CHECK_OK } { halt(0) } else { halt(1) }
+    if unsafe { CHECK_OK } {
+        halt(0)
+    } else {
+        halt(1)
+    }
 }

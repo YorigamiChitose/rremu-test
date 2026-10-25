@@ -2,7 +2,10 @@
 
 #![no_std]
 #![no_main]
-#[panic_handler] fn panic(_: &core::panic::PanicInfo) -> ! { rremu_am::halt(1) }
+#[panic_handler]
+fn panic(_: &core::panic::PanicInfo) -> ! {
+    rremu_am::halt(1)
+}
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
     let id: u32;
@@ -12,5 +15,9 @@ pub extern "C" fn rust_main() -> ! {
             id = out(reg) id,
         );
     }
-    if id == 0 { rremu_am::halt(0) } else { rremu_am::halt(1) }
+    if id == 0 {
+        rremu_am::halt(0)
+    } else {
+        rremu_am::halt(1)
+    }
 }

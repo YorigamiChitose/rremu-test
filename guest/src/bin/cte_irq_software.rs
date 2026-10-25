@@ -6,7 +6,7 @@
 
 #![no_std]
 #![no_main]
-use rremu_am::{Context, Event, trap_init, halt, clint_set_msip};
+use rremu_am::{Context, Event, clint_set_msip, halt, trap_init};
 static mut FLAG: bool = false;
 extern "C" fn handler(ev: Event, ctx: *mut Context) -> *mut Context {
     if ev == Event::IrqSoftware {
@@ -17,7 +17,10 @@ extern "C" fn handler(ev: Event, ctx: *mut Context) -> *mut Context {
     }
     ctx
 }
-#[panic_handler] fn panic(_: &core::panic::PanicInfo) -> ! { halt(1) }
+#[panic_handler]
+fn panic(_: &core::panic::PanicInfo) -> ! {
+    halt(1)
+}
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
     trap_init(handler);
@@ -32,7 +35,9 @@ pub extern "C" fn rust_main() -> ! {
     }
     clint_set_msip(1);
     for _ in 0..10000u32 {
-        if unsafe { FLAG } { halt(0) }
+        if unsafe { FLAG } {
+            halt(0)
+        }
     }
     halt(1)
 }

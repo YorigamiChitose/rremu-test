@@ -7,10 +7,15 @@
 
 #![no_std]
 #![no_main]
-use rremu_am::{Context, Event, trap_init, halt};
+use rremu_am::{Context, Event, halt, trap_init};
 
 // 预备的目标上下文
-static mut CTX_B: Context = Context { gpr: [0; 32], mcause: 0, mstatus: 0, mepc: 0 };
+static mut CTX_B: Context = Context {
+    gpr: [0; 32],
+    mcause: 0,
+    mstatus: 0,
+    mepc: 0,
+};
 
 /// 使用栈：递归调用 + 局部数组。若切换后的 sp 错误，ra 保存/恢复会错乱。
 #[inline(never)]
@@ -25,8 +30,12 @@ fn stack_probe(depth: u32) -> u32 {
 
 extern "C" fn check_fn() -> ! {
     let a0: u32;
-    unsafe { core::arch::asm!("mv {}, a0", out(reg) a0); }
-    if a0 != 0xDEAD { halt(1); }
+    unsafe {
+        core::arch::asm!("mv {}, a0", out(reg) a0);
+    }
+    if a0 != 0xDEAD {
+        halt(1);
+    }
     // stack_probe(3) = 0xBB + 0xCC + 0xDD = 0x264
     let r = stack_probe(3);
     if r == 0x264 { halt(0) } else { halt(1) }
@@ -56,7 +65,10 @@ extern "C" fn handler(ev: Event, ctx: *mut Context) -> *mut Context {
     }
 }
 
-#[panic_handler] fn panic(_: &core::panic::PanicInfo) -> ! { halt(1) }
+#[panic_handler]
+fn panic(_: &core::panic::PanicInfo) -> ! {
+    halt(1)
+}
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
     trap_init(handler);

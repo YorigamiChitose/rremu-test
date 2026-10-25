@@ -30,13 +30,27 @@ pub extern "C" fn rust_main() -> ! {
         )
     };
 
-    if a & b != 0x00 { rremu_am::halt(1); }
-    if a | b != 0xFF { rremu_am::halt(1); }
-    if a ^ b != 0xFF { rremu_am::halt(1); }
-    if !a != 0xFFFF_FF0F { rremu_am::halt(1); }
-    if s << 4 != 0x10 { rremu_am::halt(1); }
-    if x >> 4 != 0x08 { rremu_am::halt(1); }
-    if (n >> 1) != -4 { rremu_am::halt(1); }
+    if a & b != 0x00 {
+        rremu_am::halt(1);
+    }
+    if a | b != 0xFF {
+        rremu_am::halt(1);
+    }
+    if a ^ b != 0xFF {
+        rremu_am::halt(1);
+    }
+    if !a != 0xFFFF_FF0F {
+        rremu_am::halt(1);
+    }
+    if s << 4 != 0x10 {
+        rremu_am::halt(1);
+    }
+    if x >> 4 != 0x08 {
+        rremu_am::halt(1);
+    }
+    if (n >> 1) != -4 {
+        rremu_am::halt(1);
+    }
 
     rremu_am::halt(0)
 }

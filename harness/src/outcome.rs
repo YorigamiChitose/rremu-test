@@ -53,9 +53,7 @@ impl TestSpec {
             s if s.starts_with("Exit:") => {
                 Expect::Exit(s["Exit:".len()..].parse().expect("invalid Exit code"))
             }
-            s if s.starts_with("Fault:") => {
-                Expect::Fault(s["Fault:".len()..].to_string())
-            }
+            s if s.starts_with("Fault:") => Expect::Fault(s["Fault:".len()..].to_string()),
             s => panic!("unknown expect: {s}"),
         }
     }

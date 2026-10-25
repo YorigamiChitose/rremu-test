@@ -11,17 +11,13 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 }
 
 extern "C" fn expect_user_ecall(_ev: Event, ctx: *mut Context) -> *mut Context {
-    unsafe {
-        if (*ctx).mcause == 8 {
-            halt(0)
-        } else {
-            halt(1)
-        }
-    }
+    unsafe { if (*ctx).mcause == 8 { halt(0) } else { halt(1) } }
 }
 
 extern "C" fn u_entry() -> ! {
-    unsafe { core::arch::asm!("ecall", in("a7") 0u32, options(noreturn)); }
+    unsafe {
+        core::arch::asm!("ecall", in("a7") 0u32, options(noreturn));
+    }
 }
 
 extern "C" fn s_entry() -> ! {

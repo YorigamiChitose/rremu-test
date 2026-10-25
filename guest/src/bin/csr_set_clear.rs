@@ -4,10 +4,15 @@
 
 #![no_std]
 #![no_main]
-#[panic_handler] fn panic(_: &core::panic::PanicInfo) -> ! { rremu_am::halt(1) }
+#[panic_handler]
+fn panic(_: &core::panic::PanicInfo) -> ! {
+    rremu_am::halt(1)
+}
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
-    let before: u32; let after_set: u32; let after_clear: u32;
+    let before: u32;
+    let after_set: u32;
+    let after_clear: u32;
     let mask: u32 = 0x888; // bits 3,7,11 (MSIE/MTIE/MEIE)
     unsafe {
         core::arch::asm!(

@@ -5,8 +5,8 @@ mod outcome;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use rremu_machine::{Machine, RunResult};
 use rremu_loader::load_elf;
+use rremu_machine::{Machine, RunResult};
 
 use outcome::{Expect, Tests};
 
@@ -15,10 +15,14 @@ fn main() {
     let guest_dir = workspace_root.join("guest");
     let tests_toml = guest_dir.join("Tests.toml");
 
-    let content = std::fs::read_to_string(&tests_toml)
-        .unwrap_or_else(|e| { eprintln!("cannot read {}: {e}", tests_toml.display()); std::process::exit(2) });
-    let tests: Tests = toml::from_str(&content)
-        .unwrap_or_else(|e| { eprintln!("parse Tests.toml: {e}"); std::process::exit(2) });
+    let content = std::fs::read_to_string(&tests_toml).unwrap_or_else(|e| {
+        eprintln!("cannot read {}: {e}", tests_toml.display());
+        std::process::exit(2)
+    });
+    let tests: Tests = toml::from_str(&content).unwrap_or_else(|e| {
+        eprintln!("parse Tests.toml: {e}");
+        std::process::exit(2)
+    });
     let specs = tests.test;
 
     // 构建 guest
@@ -33,8 +37,7 @@ fn main() {
         std::process::exit(2);
     }
 
-    let elf_dir = workspace_root
-        .join("target/riscv32imafc-unknown-none-elf/release");
+    let elf_dir = workspace_root.join("target/riscv32imafc-unknown-none-elf/release");
 
     let mut passed = 0;
     let mut failed = 0;
@@ -91,7 +94,9 @@ fn main() {
         let mut machine = Machine::from_config(&cfg, Some(image)).expect("machine build failed");
 
         if let Some((addr, bytes)) = &dtb {
-            machine.write_mem(*addr, bytes).unwrap_or_else(|e| panic!("{}: DTB load failed: {e}", spec.name));
+            machine
+                .write_mem(*addr, bytes)
+                .unwrap_or_else(|e| panic!("{}: DTB load failed: {e}", spec.name));
         }
 
         if let Some(input) = &spec.uart_preload {
@@ -107,7 +112,9 @@ fn main() {
             (Expect::Pass, RunResult::Exited { code: 0 }) => true,
             (Expect::Fail, RunResult::Exited { code }) if *code != 0 => true,
             (Expect::Exit(want), RunResult::Exited { code }) if code == want => true,
-            (Expect::Fault(substr), RunResult::Faulted { reason }) => reason.contains(substr.as_str()),
+            (Expect::Fault(substr), RunResult::Faulted { reason }) => {
+                reason.contains(substr.as_str())
+            }
             (Expect::Timeout, RunResult::Paused) => true,
             _ => false,
         };
@@ -117,7 +124,10 @@ fn main() {
             let got = machine.drain_uart();
             let got_str = String::from_utf8_lossy(&got);
             if got_str.as_ref() != want {
-                println!("  [FAIL] {} — UART output mismatch: expected {:?}, got {:?}", spec.name, want, got_str);
+                println!(
+                    "  [FAIL] {} — UART output mismatch: expected {:?}, got {:?}",
+                    spec.name, want, got_str
+                );
                 failed += 1;
                 continue;
             }
@@ -127,7 +137,10 @@ fn main() {
             println!("  [PASS] {}", spec.name);
             passed += 1;
         } else {
-            println!("  [FAIL] {} — expected {:?}, got {:?}", spec.name, expect, result);
+            println!(
+                "  [FAIL] {} — expected {:?}, got {:?}",
+                spec.name, expect, result
+            );
             write_dump(&machine, &spec.name, &elf_path);
             failed += 1;
         }
@@ -150,7 +163,11 @@ fn write_dump(machine: &rremu_machine::Machine, name: &str, elf: &Path) {
     let elf_ref = elf.to_str().map(rremu_machine::dump::ElfRef::from_path);
     match machine.dump(elf_ref).to_json() {
         Ok(json) => match std::fs::write(&path, json) {
-            Ok(()) => println!("  dump written: {} (rremu-report {})", path.display(), path.display()),
+            Ok(()) => println!(
+                "  dump written: {} (rremu-report {})",
+                path.display(),
+                path.display()
+            ),
             Err(e) => eprintln!("  (dump write failed: {e})"),
         },
         Err(e) => eprintln!("  (dump serialize failed: {e})"),
@@ -188,4 +205,3 @@ mod tests {
         assert_eq!(rremu_am::arch::FB_HEIGHT, DEFAULT_FB_HEIGHT);
     }
 }
-

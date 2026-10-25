@@ -6,11 +6,15 @@
 
 #![no_std]
 #![no_main]
-#[panic_handler] fn panic(_: &core::panic::PanicInfo) -> ! { rremu_am::halt(1) }
+#[panic_handler]
+fn panic(_: &core::panic::PanicInfo) -> ! {
+    rremu_am::halt(1)
+}
 #[unsafe(no_mangle)]
 pub extern "C" fn rust_main() -> ! {
     let dividend: u32 = 42;
-    let q: u32; let r: u32;
+    let q: u32;
+    let r: u32;
     unsafe {
         core::arch::asm!(
             "div {q}, {a}, zero",
