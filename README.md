@@ -41,7 +41,7 @@ cd harness && cargo run --release --bin rremu-harness
 | `dtb_hex` | 可选，将十六进制 DTB 字节加载到 RAM 顶部并注入 boot a1 |
 | `enabled` | 可选，默认 `true`；`false` 表示尚未实现的用例占位，harness 只报告跳过 |
 
-## 用例清单（57 个启用 + 15 个 FP 占位）
+## 用例清单（64 个启用 + 8 个 FP 占位）
 
 | 分类 | 用例 |
 |---|---|
@@ -58,7 +58,8 @@ cd harness && cargo run --release --bin rremu-harness
 | 启动注入（3） | boot_args / load_base_pie / dtb_load |
 | 断言矩阵（2） | fail_case（Fail）/ cte_vectored_mtvec（Fault） |
 | 边界（2） | edge_div_zero / edge_null_addr |
-| FP 占位（15） | fp_misa_fd / fp_csr_rw / fp_fs_off_illegal / fp_fs_csr_illegal / fp_fs_dirty_sd / fp_sstatus_view / fp_load_store_s / fp_compressed_s / fp_arith_s / fp_fma_s / fp_convert_s / fp_compare_s / fp_trap_preserve / fp_illegal_rm / fp_d_raw |
+| FP（7） | fp_misa_fd / fp_csr_rw / fp_fs_off_illegal / fp_fs_csr_illegal / fp_fs_dirty_sd / fp_load_store_s / fp_compressed_s |
+| FP 占位（8） | fp_sstatus_view / fp_arith_s / fp_fma_s / fp_convert_s / fp_compare_s / fp_trap_preserve / fp_illegal_rm / fp_d_raw |
 
 ## S2/S3 回归覆盖
 

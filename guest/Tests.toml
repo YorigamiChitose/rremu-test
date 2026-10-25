@@ -291,36 +291,31 @@ name = "counteren_rw"
 expect = "Pass"
 max_instrs = 10000
 
-# RV32GC：FP 用例占位。实现并接入 guest 后逐项删除 `enabled = false`。
+# RV32GC：剩余 FP 用例占位。实现并接入 guest 后逐项删除 `enabled = false`。
 [[test]]
 name = "fp_misa_fd"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_csr_rw"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_fs_off_illegal"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_fs_csr_illegal"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_fs_dirty_sd"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_sstatus_view"
@@ -332,13 +327,11 @@ enabled = false
 name = "fp_load_store_s"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_compressed_s"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_arith_s"
