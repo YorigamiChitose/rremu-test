@@ -7,7 +7,6 @@ edition = "2024"
 rremu-machine = { path = "../../rremu/crates/rremu-machine" }
 rremu-loader = { path = "../../rremu/crates/rremu-loader" }
 rremu-config = { path = "../../rremu/crates/rremu-config" }
-rremu-fp = { path = "../../rremu/crates/rremu-fp" }
 rremu-am = { path = "../../rremu-am" }
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"

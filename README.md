@@ -89,12 +89,23 @@ cd harness && cargo run --release --bin rremu-harness
 
 ## Harness 测试
 
-`cd harness && cargo test` 当前包含：
+`cd harness && cargo test` 当前包含 `config_defaults_match_am_arch`：断言
+`rremu-am/arch.rs`（人工镜像）与 `rremu-config` 默认值逐项相等；地址漂移会
+立即失败。
 
-- `config_defaults_match_am_arch`：断言 `rremu-am/arch.rs`（人工镜像）与
-  `rremu-config` 默认值逐项相等；地址漂移会立即失败。
-- `fp_golden`：对 22 类 FP 运算 × 4 种舍入模式各 100,000 组固定种子向量，
-  与 `harness/tests/golden_fp.bin` 的分块指纹比较。
+harness 依赖 `rremu-machine`、`rremu-loader`、`rremu-config`（rremu path
+依赖）与 `rremu-am`。
 
-harness 依赖 `rremu-machine`、`rremu-loader`、`rremu-config`、`rremu-fp`
-（均为 rremu path 依赖）与 `rremu-am`。
+## 跨仓库依赖
+
+| 包 | 直接依赖 |
+|---|---|
+| `rremu`（根及内部 crates） | 不依赖 `rremu-am` / `rremu-test` |
+| `rremu-am`（lib） | 无 |
+| `rremu-am/report`（host 工具） | `rremu-am`、`rremu-machine`、`rremu-decode`、`rremu-isa` |
+| `rremu-test/guest` | `rremu-am` |
+| `rremu-test/harness` | `rremu-machine`、`rremu-loader`、`rremu-config`、`rremu-am` |
+
+`rremu-fp` 只作为 `rremu-cpu` 的内部依赖被传递引入，harness 不直接依赖它。
+当前不存在包级依赖环；`rremu-am/report` 是唯一从 AM workspace 指向 rremu 的
+host-only 工具依赖，不影响 `rremu-am` lib 的零依赖属性。
