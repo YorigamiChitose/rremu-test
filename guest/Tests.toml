@@ -291,7 +291,7 @@ name = "counteren_rw"
 expect = "Pass"
 max_instrs = 10000
 
-# RV32GC：剩余 FP 用例占位。实现并接入 guest 后逐项删除 `enabled = false`。
+# RV32GC：FP 用例已全部启用。
 [[test]]
 name = "fp_misa_fd"
 expect = "Pass"
@@ -366,4 +366,3 @@ max_instrs = 100000
 name = "fp_d_raw"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
