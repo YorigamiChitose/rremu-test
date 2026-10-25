@@ -321,7 +321,6 @@ max_instrs = 100000
 name = "fp_sstatus_view"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_load_store_s"
@@ -357,13 +356,11 @@ max_instrs = 100000
 name = "fp_trap_preserve"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_illegal_rm"
 expect = "Pass"
 max_instrs = 100000
-enabled = false
 
 [[test]]
 name = "fp_d_raw"
