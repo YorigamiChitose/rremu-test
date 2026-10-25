@@ -39,7 +39,6 @@ cd harness && cargo run --release --bin rremu-harness
 | `boot_hartid` / `boot_dtb` | 可选，覆盖启动时注入的 a0/a1 |
 | `load_base` | 可选，将 ELF 段与入口整体平移到该基址 |
 | `dtb_hex` | 可选，将十六进制 DTB 字节加载到 RAM 顶部并注入 boot a1 |
-| `enabled` | 可选，默认 `true`；当前 72 个用例均为 `true` |
 
 ## 用例清单（72 个启用）
 

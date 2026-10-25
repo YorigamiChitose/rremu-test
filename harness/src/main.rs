@@ -43,15 +43,11 @@ fn main() {
     let mut failed = 0;
 
     for spec in &specs {
-        if !spec.enabled {
-            println!("  [SKIP] {} — disabled placeholder", spec.name);
-            continue;
-        }
         let elf_path = elf_dir.join(&spec.name);
         let bytes = match std::fs::read(&elf_path) {
             Ok(b) => b,
             Err(e) => {
-                eprintln!("  [SKIP] {} — ELF not found: {e}", spec.name);
+                eprintln!("  [FAIL] {} — ELF not found: {e}", spec.name);
                 failed += 1;
                 continue;
             }
@@ -59,7 +55,7 @@ fn main() {
         let mut image = match load_elf(&bytes) {
             Ok(img) => img,
             Err(e) => {
-                eprintln!("  [SKIP] {} — ELF parse: {e}", spec.name);
+                eprintln!("  [FAIL] {} — ELF parse: {e}", spec.name);
                 failed += 1;
                 continue;
             }

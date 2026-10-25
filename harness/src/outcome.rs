@@ -35,13 +35,6 @@ pub struct TestSpec {
     pub load_base: Option<u32>,
     /// 加载到 RAM 顶部的 DTB 字节（十六进制字符串），同时设置 boot a1。
     pub dtb_hex: Option<String>,
-    /// 预留用例占位；为 `false` 时 harness 只报告跳过，不构建/执行。
-    #[serde(default = "default_enabled")]
-    pub enabled: bool,
-}
-
-fn default_enabled() -> bool {
-    true
 }
 
 impl TestSpec {
