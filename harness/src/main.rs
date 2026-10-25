@@ -34,12 +34,16 @@ fn main() {
     }
 
     let elf_dir = workspace_root
-        .join("target/riscv32imac-unknown-none-elf/release");
+        .join("target/riscv32imafc-unknown-none-elf/release");
 
     let mut passed = 0;
     let mut failed = 0;
 
     for spec in &specs {
+        if !spec.enabled {
+            println!("  [SKIP] {} — disabled placeholder", spec.name);
+            continue;
+        }
         let elf_path = elf_dir.join(&spec.name);
         let bytes = match std::fs::read(&elf_path) {
             Ok(b) => b,

@@ -13,7 +13,7 @@ rremu 模拟器的**端到端固件级测试工程**。Cargo workspace，包含�
 
 | 成员 | 说明 |
 |---|---|
-| `guest/` | `no_std` RV32 测试二进制 crate（`riscv32imac-unknown-none-elf`），每个 `src/bin/*.rs` 是一个独立测试用例，链接 [rremu-am](../rremu-am) HAL |
+| `guest/` | `no_std` RV32 测试二进制 crate（`riscv32imafc-unknown-none-elf`），每个 `src/bin/*.rs` 是一个独立测试用例，链接 [rremu-am](../rremu-am) HAL |
 | `harness/` | host 侧运行器：解析 `guest/Tests.toml` → 构建 guest → 加载 ELF → 经 rremu-machine（用 `rremu-config` 构造机器）执行并断言结果 |
 
 ## 运行
@@ -22,7 +22,7 @@ rremu 模拟器的**端到端固件级测试工程**。Cargo workspace，包含�
 cd harness && cargo run --release --bin rremu-harness
 ```
 
-依赖：stable Rust 1.99+、`riscv32imac-unknown-none-elf` target、rremu 主仓库（path 依赖）。
+依赖：stable Rust 1.99+、`riscv32imafc-unknown-none-elf` target、rremu 主仓库（path 依赖）。
 
 ## 测试规格（Tests.toml）
 
@@ -39,8 +39,9 @@ cd harness && cargo run --release --bin rremu-harness
 | `boot_hartid` / `boot_dtb` | 可选，覆盖启动时注入的 a0/a1 |
 | `load_base` | 可选，将 ELF 段与入口整体平移到该基址 |
 | `dtb_hex` | 可选，将十六进制 DTB 字节加载到 RAM 顶部并注入 boot a1 |
+| `enabled` | 可选，默认 `true`；`false` 表示尚未实现的用例占位，harness 只报告跳过 |
 
-## 用例清单（57 个）
+## 用例清单（57 个启用 + 15 个 FP 占位）
 
 | 分类 | 用例 |
 |---|---|
@@ -57,6 +58,7 @@ cd harness && cargo run --release --bin rremu-harness
 | 启动注入（3） | boot_args / load_base_pie / dtb_load |
 | 断言矩阵（2） | fail_case（Fail）/ cte_vectored_mtvec（Fault） |
 | 边界（2） | edge_div_zero / edge_null_addr |
+| FP 占位（15） | fp_misa_fd / fp_csr_rw / fp_fs_off_illegal / fp_fs_csr_illegal / fp_fs_dirty_sd / fp_sstatus_view / fp_load_store_s / fp_compressed_s / fp_arith_s / fp_fma_s / fp_convert_s / fp_compare_s / fp_trap_preserve / fp_illegal_rm / fp_d_raw |
 
 ## S2/S3 回归覆盖
 

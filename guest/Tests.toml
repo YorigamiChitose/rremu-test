@@ -290,3 +290,94 @@ max_instrs = 10000
 name = "counteren_rw"
 expect = "Pass"
 max_instrs = 10000
+
+# RV32GC：FP 用例占位。实现并接入 guest 后逐项删除 `enabled = false`。
+[[test]]
+name = "fp_misa_fd"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_csr_rw"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_fs_off_illegal"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_fs_csr_illegal"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_fs_dirty_sd"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_sstatus_view"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_load_store_s"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_compressed_s"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_arith_s"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_fma_s"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_convert_s"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_compare_s"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_trap_preserve"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_illegal_rm"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
+
+[[test]]
+name = "fp_d_raw"
+expect = "Pass"
+max_instrs = 100000
+enabled = false
