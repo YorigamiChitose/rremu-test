@@ -215,6 +215,7 @@ version = "0.1.0"
 dependencies = [
  "rremu-am",
  "rremu-config",
+ "rremu-fp",
  "rremu-loader",
  "rremu-machine",
  "serde",

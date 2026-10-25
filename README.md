@@ -87,12 +87,14 @@ cd harness && cargo run --release --bin rremu-harness
 - 失败用例会自动写出 `harness/dumps/<name>.json`，可用 `rremu-report`（rremu-am workspace）
   解析为可读报告（退出码语义、trap 原因、寄存器/trace）
 
-## 跨仓库一致性
+## Harness 测试
 
-harness 同时依赖 `rremu-config`（path）与 `rremu-am`（path），其单测
-`config_defaults_match_am_arch` 断言 `rremu-am/arch.rs`（人工镜像）与
-`rremu-config` 默认值逐项相等。地址若在某侧漂移，此测试会立即失败。
+`cd harness && cargo test` 当前包含：
 
-```sh
-cd harness && cargo test
-```
+- `config_defaults_match_am_arch`：断言 `rremu-am/arch.rs`（人工镜像）与
+  `rremu-config` 默认值逐项相等；地址漂移会立即失败。
+- `fp_golden`：对 22 类 FP 运算 × 4 种舍入模式各 100,000 组固定种子向量，
+  与 `harness/tests/golden_fp.bin` 的分块指纹比较。
+
+harness 依赖 `rremu-machine`、`rremu-loader`、`rremu-config`、`rremu-fp`
+（均为 rremu path 依赖）与 `rremu-am`。
